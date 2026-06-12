@@ -1,6 +1,5 @@
 from typing import Any, Dict, List, Optional
 
-from datetime import datetime, timezone
 from sqlalchemy import select, update, func, delete, text, and_
 from sqlalchemy.dialects.postgresql import insert as pg_insert
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -321,4 +320,3 @@ class SqlAlchemyDeviceRepository(DeviceRepository):
             }
             for device in devices
         ]
-
