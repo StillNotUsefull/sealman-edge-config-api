@@ -1,8 +1,8 @@
 import json
 from pathlib import Path
 import pytest
-from sealman.exceptions import UnmatchedDependency
-from sealman.helper import DeviceInfo, TemplateVariables, is_ip_in_subnet
+from sealman._internal.exceptions import UnmatchedDependency
+from sealman._internal.helper import DeviceInfo, TemplateVariables, is_ip_in_subnet
 
 
 class TestTemplateVariables:
