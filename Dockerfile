@@ -15,12 +15,14 @@ ENV VERSION=${VERSION}
 # Install uv
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
 
-# Install dependencies first (better layer caching)
+# Install external dependencies first (cacheable layer — only invalidated when
+# pyproject.toml / uv.lock change, not on every source change).
 COPY pyproject.toml uv.lock ./
-RUN uv sync --frozen --no-dev
+RUN uv sync --frozen --no-dev --no-install-project
 
-# Copy application files
+# Copy application files and install the sealman package itself
 COPY --chmod=555 --chown=nobody:nogroup . /app
+RUN uv sync --frozen --no-dev
 
 # Create logs directory with correct ownership for the nobody user
 RUN mkdir -p /app/logs && chown -R nobody:nogroup /app/logs

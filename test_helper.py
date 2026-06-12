@@ -1,8 +1,8 @@
 import json
 from pathlib import Path
 import pytest
-from exceptions import UnmatchedDependency
-from helper import DeviceInfo, TemplateVariables, is_ip_in_subnet
+from sealman.exceptions import UnmatchedDependency
+from sealman.helper import DeviceInfo, TemplateVariables, is_ip_in_subnet
 
 
 class TestTemplateVariables:
@@ -167,7 +167,7 @@ class TestDeviceInfo:
         device_info = DeviceInfo(mock_device_info)
         with pytest.raises(UnmatchedDependency):
             device_info.check_eligibility()
-            
+
 def test_is_ip_in_subnet():
     # Test cases where the IP is within the subnet
     assert is_ip_in_subnet("192.168.1.10", "192.168.1.0", 24) is True

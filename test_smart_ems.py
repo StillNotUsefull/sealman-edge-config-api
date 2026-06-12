@@ -1,7 +1,7 @@
 import pytest
 from unittest.mock import patch
-from smart_ems import SmartEMS
-from exceptions import SEMSFirmwareError
+from sealman.smart_ems import SmartEMS
+from sealman.exceptions import SEMSFirmwareError
 
 
 def test_is_firmware_version_gte():
@@ -31,7 +31,7 @@ def test_is_firmware_version_gte():
 
 
 @pytest.mark.asyncio
-@patch("smart_ems.SmartEMS.get_device_by_serial")
+@patch("sealman.smart_ems.SmartEMS.get_device_by_serial")
 async def test_get_device_secrets_list_unsupported_firmware(mock_get_device):
     """Test get_device_secrets_list with unsupported firmware version"""
     # Arrange

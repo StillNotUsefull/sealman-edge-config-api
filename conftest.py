@@ -6,7 +6,7 @@ the template value used in mock_device_info.json ("MOCK_TEST_TEMPLATE") so that
 happy-path tests pass in the CI pipeline where no .env file is present.
 """
 
-import constants
+import sealman.constants as constants
 
 _TEST_TEMPLATE = "MOCK_TEST_TEMPLATE"
 
