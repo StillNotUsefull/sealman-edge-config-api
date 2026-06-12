@@ -2,16 +2,22 @@ FROM python:3.14.4-slim-trixie
 
 # Keeps Python from generating .pyc files and forces stdout/stderr to be unbuffered
 ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1
+    PYTHONUNBUFFERED=1 \
+    UV_COMPILE_BYTECODE=0 \
+    UV_LINK_MODE=copy \
+    UV_PROJECT_ENVIRONMENT=/app/.venv
 
 WORKDIR /app
 
 ARG VERSION
 ENV VERSION=${VERSION}
 
-# Install dependencies first (better layer caching, no pip cache in image)
-COPY requirements.txt requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+# Install uv
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
+
+# Install dependencies first (better layer caching)
+COPY pyproject.toml uv.lock ./
+RUN uv sync --frozen --no-dev
 
 # Copy application files
 COPY --chmod=555 --chown=nobody:nogroup . /app
@@ -21,4 +27,4 @@ RUN mkdir -p /app/logs && chown -R nobody:nogroup /app/logs
 
 USER nobody
 
-CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port ${PORT:-5000}"]
+CMD ["sh", "-c", "/app/.venv/bin/uvicorn main:app --host 0.0.0.0 --port ${PORT:-5000}"]
