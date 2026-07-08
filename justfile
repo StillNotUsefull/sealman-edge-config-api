@@ -1,5 +1,6 @@
 image := "sealman-edge-config-api"
-env_file := ".env.local"
+env_file_local := ".env.local"
+env_file_docker := ".env.docker"
 port := "5000"
 hosts := "--add-host keycloak.localhost:host-gateway --add-host sems.localhost:host-gateway"
 
@@ -9,7 +10,7 @@ default:
 
 # Run locally with uvicorn (hot-reload)
 dev:
-    uv run uvicorn main:app --host 0.0.0.0 --port {{port}} --env-file {{env_file}} --reload
+    uv run uvicorn main:app --host 0.0.0.0 --port {{port}} --env-file {{env_file_local}} --reload
 
 # Build Docker image
 build version="local":
@@ -17,7 +18,7 @@ build version="local":
 
 # Run Docker container
 run version="latest":
-    docker run --rm -p {{port}}:{{port}} --env-file {{env_file}} {{hosts}} {{image}}:{{version}}
+    docker run --rm -p {{port}}:{{port}} --env-file {{env_file_docker}} {{hosts}} {{image}}:{{version}}
 
 # Build and run in one step
 up version="local": (build version) (run version)
